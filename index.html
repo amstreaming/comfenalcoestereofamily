@@ -77,7 +77,47 @@ max-width:100%;
     <source src="https://stream6.hcnetwork.net:8010/stream" type="audio/mpeg">
     Tu navegador no soporta audio HTML5.
 </audio>
+<script>
 
+if ("mediaSession" in navigator) {
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+
+        title: "Bless Card Radio",
+
+        artwork: [
+            {
+                src: "radio-icon.png",
+                sizes: "512x512",
+                type: "image/png"
+            }
+        ]
+
+    });
+
+}
+
+</script><script>
+
+if ("mediaSession" in navigator) {
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+
+        title: "Comfenalco Estéreo Family",
+
+        artwork: [
+            {
+                src: "radio-icon.png",
+                sizes: "512x512",
+                type: "image/png"
+            }
+        ]
+
+    });
+
+}
+
+</script>
 <h2>Oyentes conectados</h2>
 
 <div id='sonic_listeners'></div>
