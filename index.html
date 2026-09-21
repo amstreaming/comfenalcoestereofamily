@@ -1,126 +1,452 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Comfenalco Estéreo — Radio en vivo</title>
+<meta name="description" content="Escucha Comfenalco Estéreo en vivo: Family, Colaboradores e Institucional — programada y administrada por AMS.">
 
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="apple-touch-icon" href="favicon.png">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Comfenalco Estéreo Family</title>
-
-<meta property="og:title" content="Comfenalco Estéreo Family">
-<meta property="og:description" content="Escucha nuestra señal en vivo">
-<meta property="og:image" content="https://amstreaming.github.io/comfenalcoestereofamily/share.png">
-<meta property="og:type" content="website">
+<!-- Open Graph -->
+<meta property="og:title" content="Comfenalco Estéreo — Radio en vivo">
+<meta property="og:description" content="Tres emisoras para escoger: Family, Colaboradores e Institucional. Programada y administrada por AMS.">
+<meta property="og:image" content="https://ams-online.co/comfenalco-radio-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://amstreaming.github.io/comfenalcoestereofamily/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<meta property="og:site_name" content="AMS Streaming">
 
+<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Comfenalco Estéreo Family">
-<meta name="twitter:description" content="Escucha nuestra señal en vivo">
-<meta name="twitter:image" content="https://amstreaming.github.io/comfenalcoestereofamily/share.png">
+<meta name="twitter:title" content="Comfenalco Estéreo — Radio en vivo">
+<meta name="twitter:description" content="Tres emisoras para escoger: Family, Colaboradores e Institucional.">
+<meta name="twitter:image" content="https://ams-online.co/comfenalco-radio-share.jpg">
+
+<link rel="icon" type="image/png" href="https://ams-online.co/comfenalco-icon-192.png">
+
+<!-- PWA -->
+<meta name="theme-color" content="#fffdf3">
+<link rel="apple-touch-icon" href="https://ams-online.co/comfenalco-icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Comfenalco Radio">
+<meta name="mobile-web-app-capable" content="yes">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
+  :root{
+    /* Paleta tomada del logo vectorizado de Comfenalco */
+    --bg:#fbfaf1;
+    --card:#ffffff;
+    --ink:#0b3f17;
+    --ink-2:#3f5f45;
+    --dim:#6a8270;
+    --line:#dfe7cb;
+    --green:#329a21;
+    --green-deep:#034313;
+    --leaf:#92ca1d;
+    --yellow:#fee403;
+    --shadow:0 1px 2px rgba(3,67,19,.06), 0 10px 30px rgba(3,67,19,.08);
+    --display:'Montserrat','Helvetica Neue',Arial,sans-serif;
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; background:var(--bg);}
+  body{
+    margin:0; background:transparent; color:var(--ink); font-family:var(--sans);
+    min-height:100vh; display:flex; justify-content:center;
+    padding:
+      calc(1.75rem + env(safe-area-inset-top))
+      calc(1.1rem + env(safe-area-inset-right))
+      calc(2rem + env(safe-area-inset-bottom))
+      calc(1.1rem + env(safe-area-inset-left));
+    overflow-x:hidden;
+  }
 
-body{
-background:#fff;
-color:#000;
-font-family:Arial,sans-serif;
-text-align:center;
-padding:20px;
-padding-top:70px;
-}
+  /* ---------- Fondo: luz verde arriba, luz amarilla abajo + ondas del logo ---------- */
+  .bg{
+    position:fixed; top:0; left:0; width:100%; height:100vh; height:100lvh;
+    transform:translateZ(0); z-index:-2; overflow:hidden; background:var(--bg);
+  }
+  .bg::before,.bg::after{content:''; position:absolute; border-radius:50%; filter:blur(10px);}
+  .bg::before{ width:120vmax; height:120vmax; left:-62vmax; top:-72vmax;
+    background:radial-gradient(closest-side, rgba(146,202,29,.26), rgba(146,202,29,0)); }
+  .bg::after{ width:110vmax; height:110vmax; right:-56vmax; bottom:-66vmax;
+    background:radial-gradient(closest-side, rgba(254,228,3,.30), rgba(254,228,3,0)); }
+  .wave{
+    position:fixed; left:0; right:0; bottom:0; height:110px; z-index:-1;
+    display:flex; align-items:flex-end; justify-content:center; gap:clamp(4px,1.2vw,9px);
+    padding:0 12px calc(8px + env(safe-area-inset-bottom)); opacity:.42; pointer-events:none;
+  }
+  .wave span{ width:clamp(4px,1vw,7px); border-radius:99px; height:var(--h); transform-origin:50% 100%; }
+  body.is-playing .wave span{ animation:wv 1.6s ease-in-out infinite; animation-delay:var(--d); }
+  @keyframes wv{ 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(.42)} }
 
-.logo{
-display:block;
-margin:0 auto;
-width:100%;
-max-width:550px;
-height:auto;
-}
+  /* ---------- Contenedor ---------- */
+  .wrap{
+    width:100%; max-width:540px; margin:auto;
+    display:flex; flex-direction:column; align-items:center; gap:26px;
+  }
+  .brand{ width:100%; display:flex; justify-content:center; }
+  .card-scene{ transform-origin:50% 50%; width:min(88vw,460px); }
+  .card-scene img{ display:block; width:100%; height:auto; }
 
-@media (max-width:768px){
+  .pick{ text-align:center; margin:0; }
+  .pick .eyebrow{
+    font:700 12px/1 var(--display); letter-spacing:.2em; text-transform:uppercase; color:var(--green);
+    margin:0 0 8px;
+  }
+  .pick .lead{ margin:0; font-size:14.5px; color:var(--ink-2); line-height:1.5; text-wrap:balance; }
 
-body{
-padding:15px;
-}
+  /* ---------- Las tres emisoras ---------- */
+  .stations{ list-style:none; margin:0; padding:0; display:grid; gap:12px; width:100%; }
+  .st{
+    all:unset; box-sizing:border-box; width:100%; cursor:pointer;
+    display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:16px;
+    padding:16px 18px; min-height:92px;
+    background:var(--card); border:1.5px solid var(--line); border-radius:24px; box-shadow:var(--shadow);
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .18s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  .st:hover{ transform:translateY(-2px); border-color:#c4d8a4; }
+  .st:active{ transform:scale(.985); }
+  .st:focus-visible{ outline:3px solid var(--leaf); outline-offset:3px; }
 
-h1{
-font-size:26px;
-}
+  .ctl{
+    position:relative; width:58px; height:58px; border-radius:50%; flex:none;
+    background:linear-gradient(145deg,#ffee38,#fedb00);
+    box-shadow:0 4px 12px rgba(254,228,3,.45), inset 0 -2px 0 rgba(3,67,19,.10);
+    display:grid; place-items:center; color:var(--green-deep);
+  }
+  .ctl svg{ width:26px; height:26px; fill:currentColor; display:none; }
+  .ctl .i-play{ display:block; margin-left:2px; }
+  .ctl .spin{ display:none; width:24px; height:24px; border-radius:50%;
+    border:3px solid rgba(3,67,19,.22); border-top-color:var(--green-deep); animation:spin .8s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg) } }
+  .st[data-state="playing"] .i-play,
+  .st[data-state="loading"] .i-play,
+  .st[data-state="reconnecting"] .i-play{ display:none; }
+  .st[data-state="playing"] .i-pause{ display:block; }
+  .st[data-state="loading"] .spin,
+  .st[data-state="reconnecting"] .spin{ display:block; }
 
-p{
-font-size:18px;
-}
+  .txt{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+  .brandline{ font:700 10.5px/1 var(--display); letter-spacing:.16em; text-transform:uppercase; color:var(--dim); }
+  .name{ font:800 clamp(20px,6.2vw,25px)/1.08 var(--display); letter-spacing:-.01em; color:var(--ink); overflow-wrap:anywhere; }
+  .aud{ font-size:13px; color:var(--ink-2); }
 
-.logo{
-width:100%;
-max-width:100%;
-}
+  .meta{ display:flex; flex-direction:column; align-items:flex-end; gap:7px; text-align:right; }
+  .cnt{ font-size:11.5px; color:var(--dim); line-height:1.2; }
+  .cnt b{ display:block; font:700 21px/1.1 var(--display); color:var(--ink); font-variant-numeric:tabular-nums; }
+  .live{ display:none; align-items:center; gap:8px; margin-top:5px; font:700 10.5px/1 var(--display); letter-spacing:.12em; text-transform:uppercase; }
+  .eq{ display:none; align-items:flex-end; gap:3px; height:15px; }
+  .eq i{ width:3px; height:100%; border-radius:2px; background:var(--yellow); transform-origin:50% 100%; animation:eq 1s ease-in-out infinite; }
+  .eq i:nth-child(2){ animation-delay:-.3s } .eq i:nth-child(3){ animation-delay:-.6s } .eq i:nth-child(4){ animation-delay:-.15s }
+  @keyframes eq{ 0%,100%{transform:scaleY(.3)} 50%{transform:scaleY(1)} }
 
-}
+  /* emisora activa */
+  .st.is-active{
+    background:linear-gradient(135deg,#034313 0%,#0f6b1b 60%,#329a21 130%);
+    border-color:transparent; box-shadow:0 14px 34px rgba(3,67,19,.30);
+  }
+  .st.is-active .brandline{ color:#bfe3a2; }
+  .st.is-active .name{ color:#fff; }
+  .st.is-active .aud{ color:#d6ecc8; }
+  .st.is-active .cnt{ color:#c6e4b4; }
+  .st.is-active .cnt b{ color:#fff; }
+  .st.is-active .live{ display:flex; color:var(--yellow); }
+  .st[data-state="playing"] .eq{ display:flex; }
 
+  .back{
+    font:600 13px var(--sans); color:var(--green-deep); text-decoration:none;
+    border-bottom:1.5px solid rgba(50,154,33,.35); padding-bottom:2px;
+  }
+  .back:hover{ border-bottom-color:var(--green); }
+  .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+  @media (max-width:380px){
+    .st{ gap:12px; padding:14px; } .ctl{ width:52px; height:52px; }
+  }
+  @media (max-width:440px){
+    /* teléfonos: el conteo baja debajo del nombre para que "Colaboradores" nunca se parta */
+    .st{ grid-template-columns:auto 1fr; row-gap:6px; }
+    .ctl{ grid-row:1 / span 2; }
+    .txt{ grid-column:2; grid-row:1; }
+    .meta{ grid-column:2; grid-row:2; flex-direction:row; align-items:baseline; justify-content:flex-start; gap:6px; text-align:left; }
+    .cnt{ display:flex; align-items:baseline; gap:5px; }
+    .cnt b{ display:inline; font-size:17px; }
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .card-scene{
+      animation: logo-pop .85s cubic-bezier(.34,1.56,.64,1) .05s both,
+                 logo-spring 210s ease-out 3s infinite;
+    }
+    .pick,.stations{ animation:rise .6s ease .15s both; }
+  }
+  @keyframes rise{ from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none} }
+  /* rebote tipo resorte (igual que las demás emisoras AMS): entra cayendo y repite el impulso, más sutil */
+  @keyframes logo-pop{
+    0%{ transform:scale(.5) translateY(-24px); opacity:0; }
+    55%{ transform:scale(1.07) translateY(0); opacity:1; }
+    72%{ transform:scale(.95); } 86%{ transform:scale(1.03); } 100%{ transform:scale(1); }
+  }
+  @keyframes logo-spring{
+    0%,97.6%{ transform:scale(1) translateY(0); }
+    98.2%{ transform:scale(.92) translateY(6px); }
+    98.9%{ transform:scale(1.08) translateY(-14px); }
+    99.4%{ transform:scale(.97) translateY(0); }
+    99.7%{ transform:scale(1.03) translateY(-4px); }
+    100%{ transform:scale(1) translateY(0); }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .eq i,.wave span,.ctl .spin{ animation-duration:2.4s; }
+    body.is-playing .wave span{ animation:none; }
+  }
 </style>
-
 </head>
-
 <body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="wave" id="wave" aria-hidden="true"></div>
 
-<div style="height:80px;"></div>
+  <main class="wrap">
+    <div class="brand">
+      <div class="card-scene">
+        <img src="https://ams-online.co/comfenalco-logo.svg" alt="Comfenalco Estéreo de la gente — Radio. La frecuencia que transforma vidas." width="1372" height="370">
+      </div>
+    </div>
 
-<img src="logo.png" class="logo">
+    <div class="pick">
+      <p class="eyebrow">Elige tu emisora</p>
+      <p class="lead">Toca una para escucharla en vivo. Puedes cambiar de emisora cuando quieras.</p>
+    </div>
 
-<script id='sonic_js' data-port='8010' src='https://stream6.hcnetwork.net/cp/widgets.js?r=784'></script>
+    <ul class="stations">
+      <li>
+        <button type="button" class="st" data-station="familia" data-state="idle" aria-pressed="false" aria-label="Comfenalco Estéreo Family, para las familias. Escuchar en vivo">
+          <span class="ctl" aria-hidden="true">
+            <svg class="i-play" viewBox="0 0 24 24"><path d="M7.5 4.8v14.4a.6.6 0 0 0 .9.5l11.6-7.2a.6.6 0 0 0 0-1L8.4 4.3a.6.6 0 0 0-.9.5z"/></svg>
+            <svg class="i-pause" viewBox="0 0 24 24"><path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z"/></svg>
+            <span class="spin"></span>
+          </span>
+          <span class="txt"><span class="brandline">Comfenalco Estéreo</span><span class="name">Family</span><span class="aud">Para las familias</span><span class="live"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="live-txt">En vivo</span></span></span>
+          <span class="meta">
+            <span class="cnt"><b class="n">—</b><span class="u">oyentes</span></span>
+          </span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="st" data-station="colaboradores" data-state="idle" aria-pressed="false" aria-label="Comfenalco Estéreo Colaboradores, para el equipo. Escuchar en vivo">
+          <span class="ctl" aria-hidden="true">
+            <svg class="i-play" viewBox="0 0 24 24"><path d="M7.5 4.8v14.4a.6.6 0 0 0 .9.5l11.6-7.2a.6.6 0 0 0 0-1L8.4 4.3a.6.6 0 0 0-.9.5z"/></svg>
+            <svg class="i-pause" viewBox="0 0 24 24"><path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z"/></svg>
+            <span class="spin"></span>
+          </span>
+          <span class="txt"><span class="brandline">Comfenalco Estéreo</span><span class="name">Colaboradores</span><span class="aud">Para nuestro equipo</span><span class="live"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="live-txt">En vivo</span></span></span>
+          <span class="meta">
+            <span class="cnt"><b class="n">—</b><span class="u">oyentes</span></span>
+          </span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="st" data-station="institucional" data-state="idle" aria-pressed="false" aria-label="Comfenalco Estéreo Institucional. Escuchar en vivo">
+          <span class="ctl" aria-hidden="true">
+            <svg class="i-play" viewBox="0 0 24 24"><path d="M7.5 4.8v14.4a.6.6 0 0 0 .9.5l11.6-7.2a.6.6 0 0 0 0-1L8.4 4.3a.6.6 0 0 0-.9.5z"/></svg>
+            <svg class="i-pause" viewBox="0 0 24 24"><path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z"/></svg>
+            <span class="spin"></span>
+          </span>
+          <span class="txt"><span class="brandline">Comfenalco Estéreo</span><span class="name">Institucional</span><span class="aud">Ambiente institucional</span><span class="live"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="live-txt">En vivo</span></span></span>
+          <span class="meta">
+            <span class="cnt"><b class="n">—</b><span class="u">oyentes</span></span>
+          </span>
+        </button>
+      </li>
+    </ul>
 
-<audio controls autoplay style="width:100%;max-width:450px;">
-    <source src="https://stream6.hcnetwork.net:8010/stream" type="audio/mpeg">
-    Tu navegador no soporta audio HTML5.
-</audio>
-<script>
+    <a class="back" href="https://ams-online.co/">Programada y administrada por AMS →</a>
+    <p class="sr" id="sr-status" aria-live="polite"></p>
+    <audio id="ams-stream" preload="none"></audio>
+  </main>
 
-if ("mediaSession" in navigator) {
+  <script>
+    (function(){
+      // ---- Emisoras (mount = nombre del stream en el relay de Miami) ----
+      var RELAY = 'https://relay.ams-online.co/';
+      var STATIONS = {
+        familia:       { mount:'comfenalcofamily', name:'Comfenalco Estéreo Family' },
+        colaboradores: { mount:'comfenalcocolab',  name:'Comfenalco Estéreo Colaboradores' },
+        institucional: { mount:'comfenalcoinst',   name:'Comfenalco Estéreo Institucional' }
+      };
+      var audio = document.getElementById('ams-stream');
+      var srEl  = document.getElementById('sr-status');
+      var tiles = {};
+      Array.prototype.forEach.call(document.querySelectorAll('.st'), function(el){ tiles[el.dataset.station] = el; });
 
-    navigator.mediaSession.metadata = new MediaMetadata({
+      var active = null;                 // id de la emisora seleccionada
+      var loadTimer = null, reconnectTimer = null, reconnectDeadline = 0;
+      var wasPlaying = false, manualPause = false;
+      var RECONNECT_WINDOW_MS = 60000, RECONNECT_EVERY_MS = 4000;
+      var LABELS = { idle:'Toca para escuchar', loading:'Conectando…', playing:'En vivo',
+                     reconnecting:'Reconectando…', error:'Toca para reintentar' };
 
-        title: "Bless Card Radio",
+      // ---- ondas de fondo (mismo motivo que el logo) ----
+      (function(){
+        var wave = document.getElementById('wave'), N = 34, i, frag = document.createDocumentFragment();
+        var stops = [[3,67,19],[50,154,33],[146,202,29],[254,228,3]];
+        function col(t){ var p = t*(stops.length-1), k = Math.min(stops.length-2, Math.floor(p)), f = p-k, a = stops[k], b = stops[k+1];
+          return 'rgb('+[0,1,2].map(function(j){ return Math.round(a[j]+(b[j]-a[j])*f); }).join(',')+')'; }
+        for(i=0;i<N;i++){
+          var t = i/(N-1), env = Math.sin(Math.PI*t), r = (Math.sin(i*12.9898)*43758.5453)%1, h = 14 + Math.abs(r)*26 + env*46;
+          var s = document.createElement('span');
+          s.style.setProperty('--h', h.toFixed(0)+'px'); s.style.setProperty('--d', (-(i%9)*0.17).toFixed(2)+'s');
+          s.style.background = col(t); frag.appendChild(s);
+        }
+        wave.appendChild(frag);
+      })();
 
-        artwork: [
-            {
-                src: "radio-icon.png",
-                sizes: "512x512",
-                type: "image/png"
-            }
-        ]
+      function setState(id, s){
+        var el = tiles[id]; if(!el) return;
+        el.dataset.state = s;
+        el.querySelector('.live-txt').textContent = LABELS[s] || '';
+        var on = (id === active);
+        el.setAttribute('aria-pressed', on && (s === 'playing' || s === 'loading' || s === 'reconnecting') ? 'true' : 'false');
+        if(on){
+          document.body.classList.toggle('is-playing', s === 'playing');
+          srEl.textContent = STATIONS[id].name + ': ' + LABELS[s];
+        }
+      }
 
-    });
+      // ---- pantalla de bloqueo / notificaciones (Media Session API) ----
+      var hasMS = 'mediaSession' in navigator;
+      function updateMediaSession(){
+        if(!hasMS || !active) return;
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: STATIONS[active].name, artist: 'En vivo', album: 'AMS Streaming',
+          artwork: [
+            { src:'https://ams-online.co/comfenalco-artwork-512.png',  sizes:'512x512',   type:'image/png' },
+            { src:'https://ams-online.co/comfenalco-artwork-1024.png', sizes:'1024x1024', type:'image/png' }
+          ]
+        });
+      }
+      if(hasMS){
+        navigator.mediaSession.setActionHandler('play',  function(){ if(active) choose(active, true); });
+        navigator.mediaSession.setActionHandler('pause', function(){ stopPlayback(); });
+        navigator.mediaSession.setActionHandler('stop',  function(){ stopPlayback(); });
+      }
 
-}
+      // ---- reproducción ----
+      function clearTimers(){ clearTimeout(loadTimer); clearInterval(reconnectTimer); reconnectTimer = null; }
 
-</script><script>
+      function startStream(){
+        var url = RELAY + STATIONS[active].mount;
+        clearTimers();
+        wasPlaying = false; manualPause = false;
+        setState(active, 'loading');
+        loadTimer = setTimeout(function(){ if(tiles[active].dataset.state === 'loading') setState(active, 'error'); }, 12000);
+        audio.src = url;                 // siempre reconecta al "en vivo" (nunca al buffer viejo)
+        audio.load();
+        var p = audio.play();
+        if(p && p.catch) p.catch(function(){ clearTimeout(loadTimer); setState(active, 'idle'); });
+      }
 
-if ("mediaSession" in navigator) {
+      function stopPlayback(){
+        if(!active) return;
+        manualPause = true; wasPlaying = false; clearTimers();
+        audio.pause();
+        audio.removeAttribute('src'); audio.load();
+        setState(active, 'idle');
+        if(hasMS) navigator.mediaSession.playbackState = 'paused';
+      }
 
-    navigator.mediaSession.metadata = new MediaMetadata({
+      function choose(id, forcePlay){
+        if(active === id && !forcePlay){
+          var s = tiles[id].dataset.state;
+          if(s === 'playing' || s === 'loading' || s === 'reconnecting'){ stopPlayback(); return; }
+        }
+        if(active && active !== id){
+          manualPause = true; wasPlaying = false; clearTimers();   // cambio de emisora: sin "reconectar" la anterior
+          setState(active, 'idle');
+        }
+        active = id;
+        Object.keys(tiles).forEach(function(k){ tiles[k].classList.toggle('is-active', k === id); });
+        try{ history.replaceState(null, '', '#' + id); }catch(e){}
+        startStream();
+      }
 
-        title: "Comfenalco Estéreo Family",
+      Object.keys(tiles).forEach(function(id){
+        tiles[id].addEventListener('click', function(){ choose(id, false); });
+      });
 
-        artwork: [
-            {
-                src: "radio-icon.png",
-                sizes: "512x512",
-                type: "image/png"
-            }
-        ]
+      // ---- reconexión automática ----
+      function beginReconnect(){
+        if(reconnectTimer || !active) return;
+        setState(active, 'reconnecting');
+        reconnectDeadline = Date.now() + RECONNECT_WINDOW_MS;
+        attemptReconnect();
+        reconnectTimer = setInterval(attemptReconnect, RECONNECT_EVERY_MS);
+      }
+      function attemptReconnect(){
+        if(Date.now() > reconnectDeadline){
+          clearInterval(reconnectTimer); reconnectTimer = null; wasPlaying = false;
+          setState(active, 'error'); return;
+        }
+        audio.src = RELAY + STATIONS[active].mount;
+        audio.load();
+        var p = audio.play(); if(p && p.catch) p.catch(function(){});
+      }
 
-    });
+      audio.addEventListener('playing', function(){
+        if(!active) return;
+        clearTimeout(loadTimer); clearInterval(reconnectTimer); reconnectTimer = null;
+        wasPlaying = true; manualPause = false;
+        setState(active, 'playing');
+        if(hasMS){ updateMediaSession(); navigator.mediaSession.playbackState = 'playing'; }
+        fetchCounts();
+      });
+      audio.addEventListener('waiting', function(){
+        if(active && !audio.paused && tiles[active].dataset.state !== 'reconnecting') setState(active, 'loading');
+      });
+      audio.addEventListener('pause', function(){
+        if(!active) return;
+        clearTimeout(loadTimer);
+        if(wasPlaying && !manualPause){ beginReconnect(); return; }
+      });
+      audio.addEventListener('error', function(){
+        if(!active || !audio.getAttribute('src')) return;
+        clearTimeout(loadTimer);
+        if(wasPlaying && !manualPause){ beginReconnect(); } else if(!reconnectTimer){ setState(active, 'error'); }
+      });
+      audio.addEventListener('stalled', function(){ if(wasPlaying && !manualPause) beginReconnect(); });
 
-}
+      // ---- oyentes por emisora (un solo /count del relay, todas a la vez) ----
+      function fetchCounts(){
+        fetch(RELAY + 'count', { cache:'no-store' })
+          .then(function(r){ return r.json(); })
+          .then(function(data){
+            var m = data && data.mounts; if(!m) return;
+            Object.keys(STATIONS).forEach(function(id){
+              var d = m[STATIONS[id].mount]; if(!d) return;
+              var n = (typeof d.total === 'number') ? d.total : (typeof d.unique === 'number') ? d.unique : d.now;
+              if(typeof n !== 'number') return;
+              var el = tiles[id];
+              el.querySelector('.n').textContent = n;
+              el.querySelector('.u').textContent = (n === 1 ? 'oyente' : 'oyentes');
+            });
+          })
+          .catch(function(){ /* sin datos nuevos: se deja lo último visible */ });
+      }
+      var countTimer = setInterval(function(){ if(!document.hidden) fetchCounts(); }, 3000);
+      document.addEventListener('visibilitychange', function(){ if(!document.hidden) fetchCounts(); });
+      fetchCounts();
 
-</script>
-<h2>Oyentes conectados</h2>
+      // ---- enlace directo a una emisora: radio-comfenalco.html#colaboradores ----
+      var h = (location.hash || '').replace('#','');
+      if(STATIONS[h]) choose(h, false);
+    })();
 
-<div id='sonic_listeners'></div>
-
+  </script>
 </body>
 </html>
